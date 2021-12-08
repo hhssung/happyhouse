@@ -1,0 +1,47 @@
+### FRONT-END ###
+
+FrontEnd/node_modules
+
+### BACK-END ###
+
+BackEnd/HELP.md
+BackEnd/target/
+BackEnd/!.mvn/wrapper/maven-wrapper.jar
+BackEnd/!**/src/main/**/target/
+BackEnd/!**/src/test/**/target/
+
+### STS ###
+BackEnd/.apt_generated
+BackEnd/.classpath
+BackEnd/.factorypath
+BackEnd/.project
+BackEnd/.settings
+BackEnd/.springBeans
+BackEnd/.sts4-cache
+
+### IntelliJ IDEA ###
+BackEnd/.idea
+BackEnd/*.iws
+BackEnd/*.iml
+BackEnd/*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+BackEnd/build/
+BackEnd/!**/src/main/**/build/
+BackEnd/!**/src/test/**/build/
+
+### VS Code ###
+BackEnd/.vscode/
+
+Servers/
+.metadata/
+.vscode/launch.json
+
+BackEnd/*.log
+BackEnd/log/
+BackEnd/pom.xml

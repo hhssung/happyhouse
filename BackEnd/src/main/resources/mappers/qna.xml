@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.vue.model.mapper.QnaMapper">
+	
+	<!-- QUESTION -->
+	
+	<insert id="writeArticle" parameterType="qnaDto">
+		insert into qna (q_no, q_userid, q_title, q_content, hit, 
+			q_regtime, a_userid, a_content, a_regtime, answer_status, open_status)
+		values (0, #{q_userid}, #{q_title}, #{q_content}, DEFAULT , now(),
+			DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{open_status})
+	</insert>
+
+	<select id="listArticle" parameterType="map" resultType="qnaDto">
+		select q_no, q_userid, q_title, q_content, hit,
+				case when date_format(q_regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(q_regtime, '%H:%i:%s')
+				else date_format(q_regtime, '%y.%m.%d')
+				end q_regtime,
+				a_userid, a_content, a_regtime, answer_status, open_status
+		from qna
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where q_content like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+		order by q_no desc
+		limit #{start}, #{spp}
+	</select>
+
+	<select id="adminListArticle" parameterType="map" resultType="qnaDto">
+		select q_no, q_userid, q_title, q_content, hit,
+				case when date_format(q_regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(q_regtime, '%H:%i:%s')
+				else date_format(q_regtime, '%y.%m.%d')
+				end q_regtime,
+				a_userid, a_content, a_regtime, answer_status, open_status
+		from qna
+		where answer_status = false
+		order by q_no desc
+		limit #{start}, #{spp}
+	</select>
+
+	<update id="modifyArticle" parameterType="qnaDto">
+		update qna
+		set q_title = #{q_title}, q_content = #{q_content}, open_status = #{open_status}
+		where q_no = #{q_no}
+	</update>
+
+	<delete id="deleteArticle" parameterType="int">
+		delete from qna
+		where q_no = #{q_no}
+	</delete>
+	
+	<update id="updateHit" parameterType="int">
+		update qna
+		set hit = hit + 1
+		where q_no = #{q_no}
+	</update>
+	
+	<select id="getArticle" parameterType="int" resultType="qnaDto">
+		select q_no, q_userid, q_title, q_content, hit, q_regtime,
+			a_userid, a_content, a_regtime, answer_status, open_status
+		from qna
+		where q_no = #{q_no}
+	</select>
+
+	<!-- ANSWER -->
+
+	<update id="writeAnswer" parameterType="qnaDto">
+		update qna
+		set a_userid = #{a_userid}, a_content = #{a_content}, a_regtime = now(), answer_status = true
+		where q_no = #{q_no}
+	</update>
+
+</mapper>
